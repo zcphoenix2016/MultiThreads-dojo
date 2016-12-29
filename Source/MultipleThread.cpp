@@ -5,7 +5,7 @@ string MultipleThread::ReadFromFile(string fileName)
 {
     ifstream myFile;
     myFile.open(fileName);
-    char output[100];
+    string output;
 
     if(myFile.is_open()) 
     {
@@ -13,21 +13,9 @@ string MultipleThread::ReadFromFile(string fileName)
         {
             myFile >> output;
         }
+        myFile.close();
     }
-    myFile.close();
     return output;
- #if 0   
-    ifstream infile; 
-    infile.open(file.data()); //将文件流对象与文件连接起来 
-    assert(infile.is_open()); //若失败,则输出错误消息,并终止程序运行 
-
-    string s;
-    while(getline(infile,s))
-    {
-        cout<<s<<endl;
-    }
-    infile.close(); //关闭文件输入流 
-#endif
 
 }
 
