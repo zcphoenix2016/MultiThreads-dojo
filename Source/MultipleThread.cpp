@@ -28,3 +28,9 @@ void MultipleThread::creatAndWriteFile(string name,string content)
         fout.close();
     }  
 } 
+
+void MultipleThread::creatThreads()
+{
+    thread td(MultipleThread::creatAndWriteFile, "B.txt", "A");
+    td.join();
+}
