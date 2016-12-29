@@ -19,18 +19,41 @@ string MultipleThread::ReadFromFile(string fileName)
 
 }
 
-void MultipleThread::creatAndWriteFile(string name,string content)
+void MultipleThread::creatAndWriteFile(string name, string content)
 {
-    ofstream fout(name);
+    ofstream fout(name, ios::app);
     if (fout) 
     {  
-        fout << content << endl;
+        fout << content;
         fout.close();
     }  
 } 
 
-void MultipleThread::creatThreads()
+void MultipleThread::creatThreadA(string fileName)
 {
-    thread td(MultipleThread::creatAndWriteFile, "B.txt", "A");
+    thread td(MultipleThread::creatAndWriteFile, fileName, "A");   
     td.join();
+}
+
+void MultipleThread::creatThreadB(string fileName)
+{
+    thread td(MultipleThread::creatAndWriteFile, fileName, "B");
+    td.join();
+}
+
+void MultipleThread::creatThreadC(string fileName)
+{
+    thread td(MultipleThread::creatAndWriteFile, fileName, "C");
+    td.join();
+}
+
+void MultipleThread::creatThreadD(string fileName)
+{
+    thread td(MultipleThread::creatAndWriteFile, fileName, "D");
+    td.join();
+}
+void MultipleThread::clearfile(string fileName)
+{
+    ofstream fout(fileName, ios::trunc);
+    fout.close();
 }
