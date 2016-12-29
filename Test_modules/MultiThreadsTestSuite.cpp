@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "../Include/MultipleThread.hpp"
-#if 0
+
 TEST(MultiThreadsTestSuite, CreateAndWriteFile)
 {   
     MultipleThread l_mt;
@@ -9,12 +9,12 @@ TEST(MultiThreadsTestSuite, CreateAndWriteFile)
     l_mt.clearfile("test.txt");
 }
 
-
+#if 0
 TEST(MultiThreadsTestSuite, SingleThreadShouldWriteSingleChar)
 {   
     MultipleThread l_mt;
     l_mt.creatThreadA("test.txt");
-    ASSERT_EQ("AAAA",l_mt.ReadFromFile("test.txt"));
+    ASSERT_EQ("A",l_mt.ReadFromFile("test.txt"));
     l_mt.clearfile("test.txt");
     
 }
