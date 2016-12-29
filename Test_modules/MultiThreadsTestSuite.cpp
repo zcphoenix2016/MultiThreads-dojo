@@ -1,40 +1,42 @@
 #include "gtest/gtest.h"
 #include "../Include/MultipleThread.hpp"
+class MultiThreadsTestSuite : public ::testing::Test
+{
+public:
+    void TearDown()
+    {
+        m_mt.clearfile("test.txt"); 
+    }
+    MultipleThread m_mt;
+};
 
-TEST(MultiThreadsTestSuite, CreateAndWriteFile)
+TEST_F(MultiThreadsTestSuite, CreateAndWriteFile)
 {   
-    MultipleThread l_mt;
-    l_mt.creatAndWriteFile("test.txt","ABCD");
-    ASSERT_EQ("ABCD",l_mt.ReadFromFile("test.txt"));
-    l_mt.clearfile("test.txt");
+    m_mt.creatAndWriteFile("test.txt","ABCD");
+    EXPECT_EQ("ABCD",m_mt.ReadFromFile("test.txt"));
 }
 
 
-TEST(MultiThreadsTestSuite, SingleThreadShouldWriteSingleChar)
+TEST_F(MultiThreadsTestSuite, SingleThreadShouldWriteSingleChar)
 {   
     g_COUNT = 1;
-    MultipleThread l_mt;
-    l_mt.creatThreadA("test.txt");
-    ASSERT_EQ("A",l_mt.ReadFromFile("test.txt"));
-    l_mt.clearfile("test.txt");
+    m_mt.creatThreadA("test.txt");
+    EXPECT_EQ("A",m_mt.ReadFromFile("test.txt"));
     
 }
 #if 0
-TEST(MultiThreadsTestSuite, create2ThreadsWriteABIntoTheSameFile)
+TEST_F(MultiThreadsTestSuite, create2ThreadsWriteABIntoTheSameFile)
 {
-    MultipleThread l_mt;
-    l_mt.creatThreadA("test.txt");
-    l_mt.creatThreadB("test.txt");
-    ASSERT_EQ("AB",l_mt.ReadFromFile("test.txt"));
-    l_mt.clearfile("test.txt");
+    g_COUNT = 1;
+    m_mt.creatThreadA("test.txt");
+    m_mt.creatThreadB("test.txt");
+    EXPECT_EQ("AB",m_mt.ReadFromFile("test.txt"));
 }
 #endif
-TEST(MultiThreadsTestSuite, create2ThreadsWriteServeralABsIntoTheSameFile)
+TEST_F(MultiThreadsTestSuite, create2ThreadsWriteServeralABsIntoTheSameFile)
 {
     g_COUNT = 10;
-    MultipleThread l_mt;
     g_syncTds = 0;
-    l_mt.creatThreads();
-    ASSERT_EQ("ABABABABAB",l_mt.ReadFromFile("test.txt"));
-    l_mt.clearfile("test.txt");
+    m_mt.creatThreads();
+    EXPECT_EQ("ABABABABAB",m_mt.ReadFromFile("test.txt"));
 }
