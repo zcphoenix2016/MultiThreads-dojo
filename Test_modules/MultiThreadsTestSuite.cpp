@@ -9,16 +9,17 @@ TEST(MultiThreadsTestSuite, CreateAndWriteFile)
     l_mt.clearfile("test.txt");
 }
 
-#if 0
+
 TEST(MultiThreadsTestSuite, SingleThreadShouldWriteSingleChar)
 {   
+    g_COUNT = 1;
     MultipleThread l_mt;
     l_mt.creatThreadA("test.txt");
     ASSERT_EQ("A",l_mt.ReadFromFile("test.txt"));
     l_mt.clearfile("test.txt");
     
 }
-
+#if 0
 TEST(MultiThreadsTestSuite, create2ThreadsWriteABIntoTheSameFile)
 {
     MultipleThread l_mt;
@@ -30,6 +31,7 @@ TEST(MultiThreadsTestSuite, create2ThreadsWriteABIntoTheSameFile)
 #endif
 TEST(MultiThreadsTestSuite, create2ThreadsWriteServeralABsIntoTheSameFile)
 {
+    g_COUNT = 10;
     MultipleThread l_mt;
     g_syncTds = 0;
     l_mt.creatThreads();

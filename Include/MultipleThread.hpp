@@ -3,6 +3,7 @@
 using namespace std;
 
 extern int g_syncTds;
+extern int g_COUNT;
 
 class MultipleThread
 {
