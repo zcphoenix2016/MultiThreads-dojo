@@ -3,6 +3,10 @@
 class MultiThreadsTestSuite : public ::testing::Test
 {
 public:
+    void SetUp()
+    {
+        g_syncTds = 0;
+    }
     void TearDown()
     {
         m_mt.clearfile("test.txt"); 
@@ -24,19 +28,17 @@ TEST_F(MultiThreadsTestSuite, SingleThreadShouldWriteSingleChar)
     EXPECT_EQ("A",m_mt.ReadFromFile("test.txt"));
     
 }
-#if 0
+
 TEST_F(MultiThreadsTestSuite, create2ThreadsWriteABIntoTheSameFile)
 {
-    g_COUNT = 1;
-    m_mt.creatThreadA("test.txt");
-    m_mt.creatThreadB("test.txt");
+    g_COUNT = 2;
+    m_mt.creatThreads();
     EXPECT_EQ("AB",m_mt.ReadFromFile("test.txt"));
 }
-#endif
+
 TEST_F(MultiThreadsTestSuite, create2ThreadsWriteServeralABsIntoTheSameFile)
 {
     g_COUNT = 10;
-    g_syncTds = 0;
     m_mt.creatThreads();
     EXPECT_EQ("ABABABABAB",m_mt.ReadFromFile("test.txt"));
 }
