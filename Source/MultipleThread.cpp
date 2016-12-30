@@ -1,21 +1,21 @@
 #include "../Include/MultipleThread.hpp"
-#include <fstream> 
-#include <mutex> 
+#include <fstream>
+#include <mutex>
 
 int g_syncTds = 0;
 
 int g_COUNT = 10;
-static mutex g_mutex;
+static std::mutex g_mutex;
 
-string MultipleThread::ReadFromFile(string fileName)
+std::string MultipleThread::readFile(std::string fileName)
 {
-    ifstream myFile;
+    std::ifstream myFile;
     myFile.open(fileName);
-    string output;
+    std::string output;
 
-    if(myFile.is_open()) 
+    if(myFile.is_open())
     {
-        while(!myFile.eof()) 
+        while(! myFile.eof())
         {
             myFile >> output;
         }
@@ -25,41 +25,41 @@ string MultipleThread::ReadFromFile(string fileName)
 
 }
 
-void MultipleThread::creatAndWriteFile(string name, string content)
+void MultipleThread::writeFile(std::string p_file, std::string p_content)
 {
-    ofstream fout(name, ios::app);
-    if (fout) 
-    {  
-        fout << content;
-        fout.close();
+    std::ofstream l_ofs(p_file, std::ios::app);
+    if(l_ofs)
+    {
+        l_ofs << p_content;
+        l_ofs.close();
     }
-} 
+}
 
-void MultipleThread::threadStart(string name, string content)
+void MultipleThread::threadStart(std::string name, std::string content)
 {
     while(1)
     {
-        lock_guard<mutex> lck(g_mutex);
+        std::lock_guard<std::mutex> lck(g_mutex);
         if ("A" == content)
         {
             if (g_syncTds == 0)
             {
-                creatAndWriteFile(name, content);  
+                writeFile(name, content);
                 g_syncTds = 1;
                 g_COUNT--;
             }
         }
-        
+
         if ("B" == content)
         {
             if (g_syncTds == 1)
             {
-                creatAndWriteFile(name, content);  
+                writeFile(name, content);
                 g_syncTds = 0;
                 g_COUNT--;
             }
         }
-        
+
         if(g_COUNT <= 1)
             break;
     }
@@ -68,37 +68,37 @@ void MultipleThread::threadStart(string name, string content)
 
 void MultipleThread::creatThreads()
 {
-    thread tdA(MultipleThread::threadStart, "test.txt", "A");   
-    thread tdB(MultipleThread::threadStart, "test.txt", "B");
+    std::thread tdA(MultipleThread::threadStart, "test.txt", "A");
+    std::thread tdB(MultipleThread::threadStart, "test.txt", "B");
     tdA.join();
     tdB.join();
 }
 
-void MultipleThread::creatThreadA(string fileName)
+void MultipleThread::creatThreadA(std::string fileName)
 {
-    thread td(MultipleThread::threadStart, fileName, "A");   
+    std::thread td(MultipleThread::threadStart, fileName, "A");
     td.join();
 }
 
-void MultipleThread::creatThreadB(string fileName)
+void MultipleThread::creatThreadB(std::string fileName)
 {
-    thread td(MultipleThread::threadStart, fileName, "B");
+    std::thread td(MultipleThread::threadStart, fileName, "B");
     td.join();
 }
 
-void MultipleThread::creatThreadC(string fileName)
+void MultipleThread::creatThreadC(std::string fileName)
 {
-    thread td(MultipleThread::threadStart, fileName, "C");
+    std::thread td(MultipleThread::threadStart, fileName, "C");
     td.join();
 }
 
-void MultipleThread::creatThreadD(string fileName)
+void MultipleThread::creatThreadD(std::string fileName)
 {
-    thread td(MultipleThread::threadStart, fileName, "D");
+    std::thread td(MultipleThread::threadStart, fileName, "D");
     td.join();
 }
-void MultipleThread::clearfile(string fileName)
+void MultipleThread::clearfile(std::string fileName)
 {
-    ofstream fout(fileName, ios::trunc);
+    std::ofstream fout(fileName, std::ios::trunc);
     fout.close();
 }
