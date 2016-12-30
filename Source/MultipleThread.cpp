@@ -11,22 +11,21 @@ std::string MultipleThread::readFile(const std::string& p_file)
 {
     std::ifstream l_ifs;
     l_ifs.open(p_file);
-    std::string output{};
-
-    if(l_ifs.is_open())
+    if(not l_ifs.is_open())
     {
-        std::string l_str{};
-        while(! l_ifs.eof())
-        {
-            l_ifs >> l_str;
-            output += l_str;
-            l_str.clear();
-        }
-
-        l_ifs.close();
+        return "";
     }
+    
+    std::string l_output{}, l_str{};
+    while(! l_ifs.eof())
+    {
+        l_ifs >> l_str;
+        l_output += l_str;
+        l_str.clear();
+    }
+    l_ifs.close();
 
-    return output;
+    return l_output;
 }
 
 void MultipleThread::writeFile(const std::string& p_file, const std::string& p_content)
