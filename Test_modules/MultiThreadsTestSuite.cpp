@@ -23,7 +23,6 @@ TEST_F(MultiThreadsTestSuite, CreateAndWriteFile)
     EXPECT_EQ("ABCD", m_mt.readFile("test.txt"));
 }
 
-
 TEST_F(MultiThreadsTestSuite, SingleThreadShouldWriteSingleChar)
 {
     g_COUNT = 1;

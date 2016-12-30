@@ -7,25 +7,29 @@ int g_syncTds = 0;
 int g_COUNT = 10;
 static std::mutex g_mutex;
 
-std::string MultipleThread::readFile(std::string fileName)
+std::string MultipleThread::readFile(const std::string& p_file)
 {
-    std::ifstream myFile;
-    myFile.open(fileName);
-    std::string output;
+    std::ifstream l_ifs;
+    l_ifs.open(p_file);
+    std::string output{};
 
-    if(myFile.is_open())
+    if(l_ifs.is_open())
     {
-        while(! myFile.eof())
+        std::string l_str{};
+        while(! l_ifs.eof())
         {
-            myFile >> output;
+            l_ifs >> l_str;
+            output += l_str;
+            l_str.clear();
         }
-        myFile.close();
-    }
-    return output;
 
+        l_ifs.close();
+    }
+
+    return output;
 }
 
-void MultipleThread::writeFile(std::string p_file, std::string p_content)
+void MultipleThread::writeFile(const std::string& p_file, const std::string& p_content)
 {
     std::ofstream l_ofs(p_file, std::ios::app);
     if(l_ofs)

@@ -15,7 +15,7 @@ public:
     void creatThreadC(std::string);
     void creatThreadD(std::string);
     void creatThreads();
-    std::string readFile(std::string);
-    static void writeFile(std::string,std::string);
+    std::string readFile(const std::string&);
+    static void writeFile(const std::string&, const std::string&);
     void clearfile(std::string);
 };
