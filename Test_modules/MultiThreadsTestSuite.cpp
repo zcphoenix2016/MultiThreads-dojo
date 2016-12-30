@@ -17,7 +17,7 @@ public:
     MultipleThread m_mt;
 };
 
-TEST_F(MultiThreadsTestSuite, CreateAndWriteFile)
+TEST_F(MultiThreadsTestSuite, TheContentOfTheFileShouldBeWhatWrittenIntoIt)
 {
     m_mt.writeFile("test.txt", "ABCD");
     EXPECT_EQ("ABCD", m_mt.readFile("test.txt"));
@@ -28,7 +28,6 @@ TEST_F(MultiThreadsTestSuite, SingleThreadShouldWriteSingleChar)
     g_COUNT = 1;
     m_mt.creatThreadA("test.txt");
     EXPECT_EQ("A", m_mt.readFile("test.txt"));
-
 }
 
 TEST_F(MultiThreadsTestSuite, create2ThreadsWriteABIntoTheSameFile)

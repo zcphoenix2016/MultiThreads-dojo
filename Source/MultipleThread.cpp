@@ -40,7 +40,7 @@ void MultipleThread::writeFile(const std::string& p_file, const std::string& p_c
 
 void MultipleThread::threadStart(std::string name, std::string content)
 {
-    while(1)
+    do
     {
         std::lock_guard<std::mutex> lck(g_mutex);
         if ("A" == content)
@@ -62,10 +62,7 @@ void MultipleThread::threadStart(std::string name, std::string content)
                 g_COUNT--;
             }
         }
-
-        if(g_COUNT <= 1)
-            break;
-    }
+    }while(1 < g_COUNT);
 }
 
 
