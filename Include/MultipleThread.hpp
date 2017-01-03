@@ -22,7 +22,11 @@ public:
 private:
     static void funcA();
     static void funcB();
-    static std::string m_statusOfFileA;
-    static std::string m_statusOfFileB;
-    static std::mutex m_mutexs[4];
+    static void funcC();
+    static void funcD();
+    static int         m_statusOfFileA;
+    static int         m_statusOfFileB;
+    static int         m_statusOfFileC;
+    static int         m_statusOfFileD;
+    static std::mutex  m_mutexs[4];
 };

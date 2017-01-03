@@ -6,8 +6,10 @@ int g_syncTds = 0;
 int g_COUNT = 10;
 static std::mutex g_mutex;
 
-std::string MultipleThread::m_statusOfFileA = "A";
-std::string MultipleThread::m_statusOfFileB = "B";
+int MultipleThread::m_statusOfFileA = 0;
+int MultipleThread::m_statusOfFileB = 1;
+int MultipleThread::m_statusOfFileC = 2;
+int MultipleThread::m_statusOfFileD = 3;
 std::mutex MultipleThread::m_mutexs[4];
 
 std::string MultipleThread::readFile(const std::string& p_file)
@@ -39,6 +41,12 @@ void MultipleThread::writeFile(const std::string& p_file, const std::string& p_c
         l_ofs << p_content;
         l_ofs.close();
     }
+}
+
+void MultipleThread::clearFile(const std::string& p_file)
+{
+    std::ofstream fout(p_file, std::ios::trunc);
+    fout.close();
 }
 
 void MultipleThread::threadStart(std::string p_file, std::string p_content)
@@ -79,31 +87,31 @@ void MultipleThread::creatThreads()
 void MultipleThread::funcA()
 {
     int l_countFileA = 0, l_countFileB = 0;
-    while(2 > l_countFileA || 2 > l_countFileB)
+    while(4 > l_countFileA || 4 > l_countFileB)
     {
-        if(2 > l_countFileA)
+        if(4 > l_countFileA)
         {
             if(m_mutexs[0].try_lock())
             {
-                if("A" == m_statusOfFileA)
+                if(0 == m_statusOfFileA)
                 {
                     writeFile("A.txt", "A");
                     l_countFileA ++;
-                    m_statusOfFileA = "B";
+                    m_statusOfFileA = 1;
                 }
                 m_mutexs[0].unlock();
             }
         }
 
-        if(2 > l_countFileB)
+        if(4 > l_countFileB)
         {
             if(m_mutexs[1].try_lock())
             {
-                if("A" == m_statusOfFileB)
+                if(0 == m_statusOfFileB)
                 {
                     writeFile("B.txt", "A");
                     l_countFileB ++;
-                    m_statusOfFileB = "B";
+                    m_statusOfFileB = 1;
                 }
                 m_mutexs[1].unlock();
             }
@@ -114,31 +122,31 @@ void MultipleThread::funcA()
 void MultipleThread::funcB()
 {
     int l_countFileA = 0, l_countFileB = 0;
-    while(2 > l_countFileA || 2 > l_countFileB)
+    while(4 > l_countFileA || 4 > l_countFileB)
     {
-        if(2 > l_countFileA)
+        if(4 > l_countFileA)
         {
             if(m_mutexs[0].try_lock())
             {
-                if("B" == m_statusOfFileA)
+                if(1 == m_statusOfFileA)
                 {
                     writeFile("A.txt", "B");
                     l_countFileA ++;
-                    m_statusOfFileA = "A";
+                    m_statusOfFileA = 0;
                 }
                 m_mutexs[0].unlock();
             }
         }
 
-        if(2 > l_countFileB)
+        if(4 > l_countFileB)
         {
             if(m_mutexs[1].try_lock())
             {
-                if("B" == m_statusOfFileB)
+                if(1 == m_statusOfFileB)
                 {
                     writeFile("B.txt", "B");
                     l_countFileB ++;
-                    m_statusOfFileB = "A";
+                    m_statusOfFileB = 0;
                 }
                 m_mutexs[1].unlock();
             }
@@ -148,9 +156,6 @@ void MultipleThread::funcB()
 
 void MultipleThread::createThreadAB()
 {
-    m_statusOfFileA = "A";
-    m_statusOfFileB = "B";
-
     std::thread l_A(MultipleThread::funcA);
     std::thread l_B(MultipleThread::funcB);
 
@@ -168,10 +173,4 @@ void MultipleThread::creatThreadB(std::string fileName)
 {
     std::thread td(MultipleThread::threadStart, fileName, "B");
     td.join();
-}
-
-void MultipleThread::clearFile(const std::string& p_file)
-{
-    std::ofstream fout(p_file, std::ios::trunc);
-    fout.close();
 }

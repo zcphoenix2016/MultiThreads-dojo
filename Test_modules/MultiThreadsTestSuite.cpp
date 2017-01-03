@@ -48,10 +48,9 @@ TEST_F(MultiThreadsTestSuite, ThreadsABWriteABsIntoFilesAB)
 {
     m_mt.clearFile("A.txt");
     m_mt.clearFile("B.txt");
-    
-    //g_COUNT = 10;
+
     m_mt.createThreadAB();
 
-    EXPECT_EQ("ABAB", m_mt.readFile("A.txt"));
-    EXPECT_EQ("BABA", m_mt.readFile("B.txt"));
+    EXPECT_EQ("ABABABAB", m_mt.readFile("A.txt"));
+    EXPECT_EQ("BABABABA", m_mt.readFile("B.txt"));
 }
