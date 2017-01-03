@@ -15,7 +15,7 @@ public:
     void creatThreadA(std::string);
     void creatThreadB(std::string);
     void creatThreads();
-    void createThreadAB();
+    void execute();
     std::string readFile(const std::string&);
     static void writeFile(const std::string&, const std::string&);
     void clearFile(const std::string&);

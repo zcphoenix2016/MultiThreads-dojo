@@ -12,7 +12,7 @@ int MultipleThread::m_statusOfFileC = 2;
 int MultipleThread::m_statusOfFileD = 3;
 std::string MultipleThread::m_contents[4] = {"A", "B", "C", "D"};
 std::mutex MultipleThread::m_mutexs[4];
-int MultipleThread::m_count = 4;
+int MultipleThread::m_count = 2;
 
 void MultipleThread::setCount(int p_count)
 {
@@ -93,8 +93,11 @@ void MultipleThread::creatThreads()
 
 void MultipleThread::threadFunction(int p_id)
 {
-    int l_countOfFileA = 0, l_countOfFileB = 0;
-    while(m_count > l_countOfFileA || m_count > l_countOfFileB)
+    int l_countOfFileA = 0, l_countOfFileB = 0, l_countOfFileC = 0, l_countOfFileD = 0;
+    while(m_count > l_countOfFileA 
+         || m_count > l_countOfFileB
+         || m_count > l_countOfFileC
+         || m_count > l_countOfFileD)
     {
         if(m_count > l_countOfFileA)
         {
@@ -104,7 +107,7 @@ void MultipleThread::threadFunction(int p_id)
                 {
                     writeFile("A.txt", m_contents[p_id]);
                     l_countOfFileA ++;
-                    m_statusOfFileA = (m_statusOfFileA + 1) % 2;
+                    m_statusOfFileA = (m_statusOfFileA + 1) % 4;
                 }
                 m_mutexs[0].unlock();
             }
@@ -118,21 +121,53 @@ void MultipleThread::threadFunction(int p_id)
                 {
                     writeFile("B.txt", m_contents[p_id]);
                     l_countOfFileB ++;
-                    m_statusOfFileB = (m_statusOfFileB + 1) % 2;
+                    m_statusOfFileB = (m_statusOfFileB + 1) % 4;
                 }
                 m_mutexs[1].unlock();
+            }
+        }
+        
+        if(m_count > l_countOfFileC)
+        {
+            if(m_mutexs[2].try_lock())
+            {
+                if(p_id == m_statusOfFileC)
+                {
+                    writeFile("C.txt", m_contents[p_id]);
+                    l_countOfFileC ++;
+                    m_statusOfFileC = (m_statusOfFileC + 1) % 4;
+                }
+                m_mutexs[2].unlock();
+            }
+        }
+        
+        if(m_count > l_countOfFileD)
+        {
+            if(m_mutexs[3].try_lock())
+            {
+                if(p_id == m_statusOfFileD)
+                {
+                    writeFile("D.txt", m_contents[p_id]);
+                    l_countOfFileD ++;
+                    m_statusOfFileD = (m_statusOfFileD + 1) % 4;
+                }
+                m_mutexs[3].unlock();
             }
         }
     }
 }
 
-void MultipleThread::createThreadAB()
+void MultipleThread::execute()
 {
     std::thread l_A(MultipleThread::threadFunction, 0);
     std::thread l_B(MultipleThread::threadFunction, 1);
+    std::thread l_C(MultipleThread::threadFunction, 2);
+    std::thread l_D(MultipleThread::threadFunction, 3);
 
     l_A.join();
     l_B.join();
+    l_C.join();
+    l_D.join();
 }
 
 void MultipleThread::creatThreadA(std::string p_file)
