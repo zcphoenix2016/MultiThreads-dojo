@@ -72,7 +72,6 @@ void MultipleThread::threadFunction(int p_id)
                         l_countOfLetters[l_index] ++;
                         m_status[l_index] = (m_status[l_index] + 1) % m_numOfThreads;
                     }
-
                     m_mutexs[l_index].unlock();
                 }
             }
