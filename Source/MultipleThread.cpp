@@ -48,8 +48,12 @@ void MultipleThread::writeFile(const std::string& p_file, const std::string& p_c
 
 void MultipleThread::clearFile(const std::string& p_file)
 {
-    std::ofstream fout(p_file, std::ios::trunc);
-    fout.close();
+    std::ofstream l_ofs(p_file, std::ios::trunc);
+
+    if(l_ofs)
+    {
+        l_ofs.close();
+    }
 }
 
 void MultipleThread::threadFunction(int p_id)
