@@ -3,6 +3,7 @@
 
 TEST(MultiThreadsTestSuite, TheContentsOfFilesShouldBeWhatWrittenByMultiThreads)
 {
+    MultipleThread::setCount(4);
     MultipleThread l_mt;
 
     l_mt.clearFile("A.txt");
@@ -12,8 +13,8 @@ TEST(MultiThreadsTestSuite, TheContentsOfFilesShouldBeWhatWrittenByMultiThreads)
 
     l_mt.execute();
 
-    EXPECT_EQ("ABCDABCD", l_mt.readFile("A.txt"));
-    EXPECT_EQ("BCDABCDA", l_mt.readFile("B.txt"));
-    EXPECT_EQ("CDABCDAB", l_mt.readFile("C.txt"));
-    EXPECT_EQ("DABCDABC", l_mt.readFile("D.txt"));
+    EXPECT_EQ("ABCDABCDABCDABCD", l_mt.readFile("A.txt"));
+    EXPECT_EQ("BCDABCDABCDABCDA", l_mt.readFile("B.txt"));
+    EXPECT_EQ("CDABCDABCDABCDAB", l_mt.readFile("C.txt"));
+    EXPECT_EQ("DABCDABCDABCDABC", l_mt.readFile("D.txt"));
 }

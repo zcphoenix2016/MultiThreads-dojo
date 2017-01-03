@@ -1,11 +1,6 @@
 #include "../Include/MultipleThread.hpp"
 #include <fstream>
 
-int g_syncTds = 0;
-
-int g_COUNT = 10;
-static std::mutex g_mutex;
-
 int MultipleThread::m_statusOfFileA = 0;
 int MultipleThread::m_statusOfFileB = 1;
 int MultipleThread::m_statusOfFileC = 2;
@@ -13,6 +8,7 @@ int MultipleThread::m_statusOfFileD = 3;
 std::string MultipleThread::m_contents[4] = {"A", "B", "C", "D"};
 std::mutex MultipleThread::m_mutexs[4];
 int MultipleThread::m_count = 2;
+int MultipleThread::m_numOfThreads = 4;
 
 void MultipleThread::setCount(int p_count)
 {
@@ -72,7 +68,7 @@ void MultipleThread::threadFunction(int p_id)
                 {
                     writeFile("A.txt", m_contents[p_id]);
                     l_countOfFileA ++;
-                    m_statusOfFileA = (m_statusOfFileA + 1) % 4;
+                    m_statusOfFileA = (m_statusOfFileA + 1) % m_numOfThreads;
                 }
                 m_mutexs[0].unlock();
             }
@@ -86,7 +82,7 @@ void MultipleThread::threadFunction(int p_id)
                 {
                     writeFile("B.txt", m_contents[p_id]);
                     l_countOfFileB ++;
-                    m_statusOfFileB = (m_statusOfFileB + 1) % 4;
+                    m_statusOfFileB = (m_statusOfFileB + 1) % m_numOfThreads;
                 }
                 m_mutexs[1].unlock();
             }
@@ -100,7 +96,7 @@ void MultipleThread::threadFunction(int p_id)
                 {
                     writeFile("C.txt", m_contents[p_id]);
                     l_countOfFileC ++;
-                    m_statusOfFileC = (m_statusOfFileC + 1) % 4;
+                    m_statusOfFileC = (m_statusOfFileC + 1) % m_numOfThreads;
                 }
                 m_mutexs[2].unlock();
             }
@@ -114,7 +110,7 @@ void MultipleThread::threadFunction(int p_id)
                 {
                     writeFile("D.txt", m_contents[p_id]);
                     l_countOfFileD ++;
-                    m_statusOfFileD = (m_statusOfFileD + 1) % 4;
+                    m_statusOfFileD = (m_statusOfFileD + 1) % m_numOfThreads;
                 }
                 m_mutexs[3].unlock();
             }
