@@ -1,10 +1,6 @@
 #include <iostream>
 #include <thread>
-
-void hello()
-{
-    std::cout << "Hello Concurrent World." << std::endl;
-}
+#include "../Include/MultipleThread.hpp"
 
 #ifndef UNIT_TEST
 int main(int argc, char** argv)
@@ -12,9 +8,12 @@ int main(int argc, char** argv)
 int ut_main(int argc, char** argv)
 #endif
 {
-    std::thread t(hello);
+    MultipleThread l_mt;
 
-    t.join();
+    l_mt.createThreadAB();
+    
+    l_mt.clearFile("A.txt");
+    l_mt.clearFile("B.txt");
 
     return 0;
 }

@@ -2,6 +2,8 @@
 
 #include <string>
 #include <thread>
+#include <mutex>
+//#include <map>
 
 extern int g_syncTds;
 extern int g_COUNT;
@@ -15,7 +17,15 @@ public:
     void creatThreadC(std::string);
     void creatThreadD(std::string);
     void creatThreads();
+    void createThreadAB();
     std::string readFile(const std::string&);
     static void writeFile(const std::string&, const std::string&);
-    void clearfile(std::string);
+    void clearFile(std::string);
+
+private:
+    static void funcA();
+    static void funcB();
+    static std::string m_statusOfFileA;
+    static std::string m_statusOfFileB;
+    static std::mutex m_mutexs[4];
 };
