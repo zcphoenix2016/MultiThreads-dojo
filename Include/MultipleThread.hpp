@@ -17,7 +17,7 @@ public:
 private:
     static void threadFunction(int);
 
-    static std::vector<int>         m_status;
+    static std::vector<int>         m_statusOfFiles;
     static std::vector<std::mutex>  m_mutexs;
     static std::vector<std::string> m_contents;
     static int                      m_count;

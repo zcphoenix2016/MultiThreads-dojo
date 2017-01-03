@@ -2,7 +2,7 @@
 #include <fstream>
 #include <algorithm>
 
-std::vector<int>         MultipleThread::m_status{0, 1, 2, 3};
+std::vector<int>         MultipleThread::m_statusOfFiles{0, 1, 2, 3};
 std::vector<std::string> MultipleThread::m_contents{"A", "B", "C", "D"};
 std::vector<std::mutex>  MultipleThread::m_mutexs(4);
 int                      MultipleThread::m_count = 2;
@@ -64,13 +64,13 @@ void MultipleThread::threadFunction(int p_id)
         {
             if(m_count > l_countOfLetters[l_index])
             {
-                if(m_mutexs[l_index].try_lock())
+                if(p_id == m_statusOfFiles[l_index])
                 {
-                    if(p_id == m_status[l_index])
+                    if(m_mutexs[l_index].try_lock())
                     {
                         writeFile(l_fileNames[l_index], m_contents[p_id]);
                         l_countOfLetters[l_index] ++;
-                        m_status[l_index] = (m_status[l_index] + 1) % m_numOfThreads;
+                        m_statusOfFiles[l_index] = (m_statusOfFiles[l_index] + 1) % m_numOfThreads;
                     }
                     m_mutexs[l_index].unlock();
                 }
