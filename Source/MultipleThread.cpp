@@ -2,11 +2,11 @@
 #include <fstream>
 #include <algorithm>
 
-std::vector<int>  MultipleThread::m_status{0, 1, 2, 3};
+std::vector<int>         MultipleThread::m_status{0, 1, 2, 3};
 std::vector<std::string> MultipleThread::m_contents{"A", "B", "C", "D"};
-std::vector<std::mutex> MultipleThread::m_mutexs(4);
-int MultipleThread::m_count = 2;
-int MultipleThread::m_numOfThreads = 4;
+std::vector<std::mutex>  MultipleThread::m_mutexs(4);
+int                      MultipleThread::m_count = 2;
+int                      MultipleThread::m_numOfThreads = 4;
 
 void MultipleThread::setCount(int p_count)
 {
