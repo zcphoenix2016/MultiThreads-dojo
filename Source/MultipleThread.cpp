@@ -1,5 +1,7 @@
 #include "../Include/MultipleThread.hpp"
 #include <fstream>
+#include <vector>
+#include <algorithm>
 
 int MultipleThread::m_status[4] = {0, 1, 2, 3};
 std::string MultipleThread::m_contents[4] = {"A", "B", "C", "D"};
@@ -55,65 +57,25 @@ void MultipleThread::clearFile(const std::string& p_file)
 
 void MultipleThread::threadFunction(int p_id)
 {
-    int l_countOfFileA = 0, l_countOfFileB = 0, l_countOfFileC = 0, l_countOfFileD = 0;
-    while(m_count > l_countOfFileA
-         || m_count > l_countOfFileB
-         || m_count > l_countOfFileC
-         || m_count > l_countOfFileD)
+    std::vector<int> l_countOfLetters{0, 0, 0, 0};
+    std::vector<std::string> l_fileNames{"A.txt", "B.txt", "C.txt", "D.txt"};
+    while(std::any_of(l_countOfLetters.begin(), l_countOfLetters.end(), [](int p_count){return m_count > p_count;}))
     {
-        if(m_count > l_countOfFileA)
+        for(int l_index = 0; l_index < 4; ++ l_index)
         {
-            if(m_mutexs[0].try_lock())
+            if(m_count > l_countOfLetters[l_index])
             {
-                if(p_id == m_status[0])
+                if(m_mutexs[l_index].try_lock())
                 {
-                    writeFile("A.txt", m_contents[p_id]);
-                    l_countOfFileA ++;
-                    m_status[0] = (m_status[0] + 1) % m_numOfThreads;
-                }
-                m_mutexs[0].unlock();
-            }
-        }
+                    if(p_id == m_status[l_index])
+                    {
+                        writeFile(l_fileNames[l_index], m_contents[p_id]);
+                        l_countOfLetters[l_index] ++;
+                        m_status[l_index] = (m_status[l_index] + 1) % m_numOfThreads;
+                    }
 
-        if(m_count > l_countOfFileB)
-        {
-            if(m_mutexs[1].try_lock())
-            {
-                if(p_id == m_status[1])
-                {
-                    writeFile("B.txt", m_contents[p_id]);
-                    l_countOfFileB ++;
-                    m_status[1] = (m_status[1] + 1) % m_numOfThreads;
+                    m_mutexs[l_index].unlock();
                 }
-                m_mutexs[1].unlock();
-            }
-        }
-
-        if(m_count > l_countOfFileC)
-        {
-            if(m_mutexs[2].try_lock())
-            {
-                if(p_id == m_status[2])
-                {
-                    writeFile("C.txt", m_contents[p_id]);
-                    l_countOfFileC ++;
-                    m_status[2] = (m_status[2] + 1) % m_numOfThreads;
-                }
-                m_mutexs[2].unlock();
-            }
-        }
-
-        if(m_count > l_countOfFileD)
-        {
-            if(m_mutexs[3].try_lock())
-            {
-                if(p_id == m_status[3])
-                {
-                    writeFile("D.txt", m_contents[p_id]);
-                    l_countOfFileD ++;
-                    m_status[3] = (m_status[3] + 1) % m_numOfThreads;
-                }
-                m_mutexs[3].unlock();
             }
         }
     }
