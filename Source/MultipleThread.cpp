@@ -6,7 +6,6 @@ int g_syncTds = 0;
 int g_COUNT = 10;
 static std::mutex g_mutex;
 
-//std::map<std::string, std::string> MultipleThread::m_fileStatus;
 std::string MultipleThread::m_statusOfFileA = "A";
 std::string MultipleThread::m_statusOfFileB = "B";
 std::mutex MultipleThread::m_mutexs[4];
@@ -171,19 +170,8 @@ void MultipleThread::creatThreadB(std::string fileName)
     td.join();
 }
 
-void MultipleThread::creatThreadC(std::string fileName)
+void MultipleThread::clearFile(const std::string& p_file)
 {
-    std::thread td(MultipleThread::threadStart, fileName, "C");
-    td.join();
-}
-
-void MultipleThread::creatThreadD(std::string fileName)
-{
-    std::thread td(MultipleThread::threadStart, fileName, "D");
-    td.join();
-}
-void MultipleThread::clearFile(std::string fileName)
-{
-    std::ofstream fout(fileName, std::ios::trunc);
+    std::ofstream fout(p_file, std::ios::trunc);
     fout.close();
 }

@@ -3,7 +3,6 @@
 #include <string>
 #include <thread>
 #include <mutex>
-//#include <map>
 
 extern int g_syncTds;
 extern int g_COUNT;
@@ -14,13 +13,11 @@ public:
     static void threadStart(std::string, std::string);
     void creatThreadA(std::string);
     void creatThreadB(std::string);
-    void creatThreadC(std::string);
-    void creatThreadD(std::string);
     void creatThreads();
     void createThreadAB();
     std::string readFile(const std::string&);
     static void writeFile(const std::string&, const std::string&);
-    void clearFile(std::string);
+    void clearFile(const std::string&);
 
 private:
     static void funcA();
