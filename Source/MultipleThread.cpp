@@ -56,45 +56,10 @@ void MultipleThread::clearFile(const std::string& p_file)
     fout.close();
 }
 
-void MultipleThread::threadStart(std::string p_file, std::string p_content)
-{
-    do
-    {
-        std::lock_guard<std::mutex> lck(g_mutex);
-        if("A" == p_content)
-        {
-            if(g_syncTds == 0)
-            {
-                writeFile(p_file, p_content);
-                g_syncTds = 1;
-                g_COUNT--;
-            }
-        }
-
-        if("B" == p_content)
-        {
-            if(g_syncTds == 1)
-            {
-                writeFile(p_file, p_content);
-                g_syncTds = 0;
-                g_COUNT--;
-            }
-        }
-    }while(1 < g_COUNT);
-}
-
-void MultipleThread::creatThreads()
-{
-    std::thread tdA(MultipleThread::threadStart, "test.txt", "A");
-    std::thread tdB(MultipleThread::threadStart, "test.txt", "B");
-    tdA.join();
-    tdB.join();
-}
-
 void MultipleThread::threadFunction(int p_id)
 {
     int l_countOfFileA = 0, l_countOfFileB = 0, l_countOfFileC = 0, l_countOfFileD = 0;
-    while(m_count > l_countOfFileA 
+    while(m_count > l_countOfFileA
          || m_count > l_countOfFileB
          || m_count > l_countOfFileC
          || m_count > l_countOfFileD)
@@ -126,7 +91,7 @@ void MultipleThread::threadFunction(int p_id)
                 m_mutexs[1].unlock();
             }
         }
-        
+
         if(m_count > l_countOfFileC)
         {
             if(m_mutexs[2].try_lock())
@@ -140,7 +105,7 @@ void MultipleThread::threadFunction(int p_id)
                 m_mutexs[2].unlock();
             }
         }
-        
+
         if(m_count > l_countOfFileD)
         {
             if(m_mutexs[3].try_lock())
@@ -168,16 +133,4 @@ void MultipleThread::execute()
     l_B.join();
     l_C.join();
     l_D.join();
-}
-
-void MultipleThread::creatThreadA(std::string p_file)
-{
-    std::thread td(MultipleThread::threadStart, p_file, "A");
-    td.join();
-}
-
-void MultipleThread::creatThreadB(std::string fileName)
-{
-    std::thread td(MultipleThread::threadStart, fileName, "B");
-    td.join();
 }

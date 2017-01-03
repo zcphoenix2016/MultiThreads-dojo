@@ -11,10 +11,6 @@ extern int g_COUNT;
 class MultipleThread
 {
 public:
-    static void threadStart(std::string, std::string);
-    void creatThreadA(std::string);
-    void creatThreadB(std::string);
-    void creatThreads();
     void execute();
     std::string readFile(const std::string&);
     static void writeFile(const std::string&, const std::string&);
@@ -23,6 +19,7 @@ public:
 
 private:
     static void threadFunction(int);
+
     static int         m_statusOfFileA;
     static int         m_statusOfFileB;
     static int         m_statusOfFileC;
