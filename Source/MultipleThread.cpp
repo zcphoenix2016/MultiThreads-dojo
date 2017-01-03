@@ -1,11 +1,10 @@
 #include "../Include/MultipleThread.hpp"
 #include <fstream>
-#include <vector>
 #include <algorithm>
 
-int MultipleThread::m_status[4] = {0, 1, 2, 3};
-std::string MultipleThread::m_contents[4] = {"A", "B", "C", "D"};
-std::mutex MultipleThread::m_mutexs[4];
+std::vector<int>  MultipleThread::m_status{0, 1, 2, 3};
+std::vector<std::string> MultipleThread::m_contents{"A", "B", "C", "D"};
+std::vector<std::mutex> MultipleThread::m_mutexs(4);
 int MultipleThread::m_count = 2;
 int MultipleThread::m_numOfThreads = 4;
 

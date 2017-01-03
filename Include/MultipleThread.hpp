@@ -3,6 +3,7 @@
 #include <string>
 #include <thread>
 #include <mutex>
+#include <vector>
 
 class MultipleThread
 {
@@ -14,11 +15,11 @@ public:
     static void setCount(int);
 
 private:
-    static void        threadFunction(int);
+    static void threadFunction(int);
 
-    static int         m_status[4];
-    static std::mutex  m_mutexs[4];
-    static std::string m_contents[4];
-    static int         m_count;
-    static int         m_numOfThreads;
+    static std::vector<int>         m_status;
+    static std::vector<std::mutex>  m_mutexs;
+    static std::vector<std::string> m_contents;
+    static int                      m_count;
+    static int                      m_numOfThreads;
 };
