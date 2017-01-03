@@ -1,10 +1,7 @@
 #include "../Include/MultipleThread.hpp"
 #include <fstream>
 
-int MultipleThread::m_statusOfFileA = 0;
-int MultipleThread::m_statusOfFileB = 1;
-int MultipleThread::m_statusOfFileC = 2;
-int MultipleThread::m_statusOfFileD = 3;
+int MultipleThread::m_status[4] = {0, 1, 2, 3};
 std::string MultipleThread::m_contents[4] = {"A", "B", "C", "D"};
 std::mutex MultipleThread::m_mutexs[4];
 int MultipleThread::m_count = 2;
@@ -68,11 +65,11 @@ void MultipleThread::threadFunction(int p_id)
         {
             if(m_mutexs[0].try_lock())
             {
-                if(p_id == m_statusOfFileA)
+                if(p_id == m_status[0])
                 {
                     writeFile("A.txt", m_contents[p_id]);
                     l_countOfFileA ++;
-                    m_statusOfFileA = (m_statusOfFileA + 1) % m_numOfThreads;
+                    m_status[0] = (m_status[0] + 1) % m_numOfThreads;
                 }
                 m_mutexs[0].unlock();
             }
@@ -82,11 +79,11 @@ void MultipleThread::threadFunction(int p_id)
         {
             if(m_mutexs[1].try_lock())
             {
-                if(p_id == m_statusOfFileB)
+                if(p_id == m_status[1])
                 {
                     writeFile("B.txt", m_contents[p_id]);
                     l_countOfFileB ++;
-                    m_statusOfFileB = (m_statusOfFileB + 1) % m_numOfThreads;
+                    m_status[1] = (m_status[1] + 1) % m_numOfThreads;
                 }
                 m_mutexs[1].unlock();
             }
@@ -96,11 +93,11 @@ void MultipleThread::threadFunction(int p_id)
         {
             if(m_mutexs[2].try_lock())
             {
-                if(p_id == m_statusOfFileC)
+                if(p_id == m_status[2])
                 {
                     writeFile("C.txt", m_contents[p_id]);
                     l_countOfFileC ++;
-                    m_statusOfFileC = (m_statusOfFileC + 1) % m_numOfThreads;
+                    m_status[2] = (m_status[2] + 1) % m_numOfThreads;
                 }
                 m_mutexs[2].unlock();
             }
@@ -110,11 +107,11 @@ void MultipleThread::threadFunction(int p_id)
         {
             if(m_mutexs[3].try_lock())
             {
-                if(p_id == m_statusOfFileD)
+                if(p_id == m_status[3])
                 {
                     writeFile("D.txt", m_contents[p_id]);
                     l_countOfFileD ++;
-                    m_statusOfFileD = (m_statusOfFileD + 1) % m_numOfThreads;
+                    m_status[3] = (m_status[3] + 1) % m_numOfThreads;
                 }
                 m_mutexs[3].unlock();
             }

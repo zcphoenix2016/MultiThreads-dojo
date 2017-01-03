@@ -16,10 +16,7 @@ public:
 private:
     static void        threadFunction(int);
 
-    static int         m_statusOfFileA;
-    static int         m_statusOfFileB;
-    static int         m_statusOfFileC;
-    static int         m_statusOfFileD;
+    static int         m_status[4];
     static std::mutex  m_mutexs[4];
     static std::string m_contents[4];
     static int         m_count;
