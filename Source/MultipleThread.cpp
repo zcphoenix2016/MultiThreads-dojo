@@ -1,6 +1,7 @@
 #include "../Include/MultipleThread.hpp"
 #include <fstream>
 #include <algorithm>
+//#include <iostream>
 
 std::vector<int>         MultipleThread::m_statusOfFiles{0, 1, 2, 3};
 std::vector<std::string> MultipleThread::m_contents{"A", "B", "C", "D"};
@@ -69,6 +70,7 @@ void MultipleThread::threadFunction(int p_id)
                     if(m_mutexs[l_index].try_lock())
                     {
                         writeFile(l_fileNames[l_index], m_contents[p_id]);
+                        //std::cout << m_contents[p_id];
                         l_countOfLetters[l_index] ++;
                         m_statusOfFiles[l_index] = (m_statusOfFiles[l_index] + 1) % m_numOfThreads;
                     }

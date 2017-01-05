@@ -11,9 +11,6 @@ int ut_main(int argc, char** argv)
     MultipleThread l_mt;
 
     l_mt.execute();
-    
-    l_mt.clearFile("A.txt");
-    l_mt.clearFile("B.txt");
 
     return 0;
 }
